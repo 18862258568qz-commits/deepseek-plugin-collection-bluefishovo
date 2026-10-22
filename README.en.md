@@ -12,6 +12,21 @@ Documentation index (one line per doc, with "still current?" notes): **[docs/REA
 Folder layout and `scripts/` naming conventions: **[docs/FOLDER_MAP.md](docs/FOLDER_MAP.md)**.
 Permission model and security promises: **[RULES.md](RULES.md)**.
 
+## Two platform editions, one core
+
+Presets, persona cards, console, MCP tools and the voice pipeline are shared. Only the QQ gateway and the
+optional voice engine differ:
+
+| | Windows edition | macOS edition |
+| --- | --- | --- |
+| QQ gateway | **SnowLuma** (official Windows build) | **NapCat** (SnowLuma has no macOS build) |
+| Voice engine (optional) | **NVIDIA → CUDA**; AMD / no dGPU → CPU fallback | local GPT-SoVITS (CPU / Apple Silicon) |
+| One-click start | `windows\start-all-windows.bat` | `./start-all-mac.command` |
+| DSH Desktop random port | `node scripts\start-windows.mjs` | `node scripts/start-mac.mjs` |
+| Full guide | **[docs/guides/WINDOWS.md](docs/guides/WINDOWS.md)** ([scripts](windows/README.md)) | **[docs/guides/MACOS_NAPCAT.md](docs/guides/MACOS_NAPCAT.md)** |
+
+Voice is optional: without a local engine the bridge falls back to **edge-tts** (no GPU required).
+
 ## Architecture
 
 ```

@@ -10,8 +10,17 @@
 > + 本地专属音色（可选，自备 GPT-SoVITS）。用法与全部字段见 **[docs/guides/VOICE.md](docs/guides/VOICE.md)**；
 > 放音频的规则见 **[audio/README.md](audio/README.md)**。
 >
-> 🍎 **macOS 用户**：QQ 侧用 NapCat（SnowLuma 官方没有 macOS 版），且 DSH 桌面版端口每次启动都会变 ——
-> 全流程见 **[docs/guides/MACOS_NAPCAT.md](docs/guides/MACOS_NAPCAT.md)**。
+> 🧩 **两个平台版本，同一套内核**（preset / 人格卡 / 控制台 / 语音工具完全共用，只有网关与语音引擎的装法不同）：
+>
+> | | Windows 版 | macOS 版 |
+> | --- | --- | --- |
+> | QQ 网关 | **SnowLuma**（官方 Windows 版） | **NapCat**（SnowLuma 没有 macOS 版） |
+> | 语音引擎（可选） | **NVIDIA → CUDA**；AMD / 无独显 → CPU 兜底 | 本地 GPT-SoVITS（CPU / Apple Silicon） |
+> | 一键启动 | `windows\start-all-windows.bat` | `./start-all-mac.command` |
+> | DSH 桌面版随机端口 | `node scripts\start-windows.mjs` | `node scripts/start-mac.mjs` |
+> | 完整文档 | **[docs/guides/WINDOWS.md](docs/guides/WINDOWS.md)**（脚本清单见 [windows/README.md](windows/README.md)） | **[docs/guides/MACOS_NAPCAT.md](docs/guides/MACOS_NAPCAT.md)** |
+>
+> 语音可选：不装本地引擎时自动回退 **edge-tts**（联网即可，零显卡要求）。
 
 把 QQ 消息接入 DSH agent：QQ 好友/群发来的消息会变成 DSH 会话里的用户消息，agent 的回复（含提问、工具审批）会发回 QQ。
 
@@ -155,15 +164,18 @@ QQ 消息 ──► QQ 网关（OneBot v11 WS）──► 本桥接进程 ──
 ## 前置条件
 
 1. **Node.js ≥ 22.13**（`node -v` 确认；`package.json` 的 `engines` 会拦）
-2. 运行中的 **DSH**（桌面版或 Web 版）。Web 版默认 `http://127.0.0.1:3080`；桌面版端口随机，见第 3 节的 `start-mac.mjs`
+2. 运行中的 **DSH**（桌面版或 Web 版）。Web 版默认 `http://127.0.0.1:3080`；桌面版端口随机，
+   macOS 用 `scripts/start-mac.mjs`、Windows 用 `scripts/start-windows.mjs` 探测并写回配置
 3. 运行中的 **QQ 网关（二选一）**，且配好 OneBot WebSocket 与 HTTP API（默认 `ws://127.0.0.1:3001` / `http://127.0.0.1:3000`，`accessToken` 视配置填写）：
    - **SnowLuma**（Windows / Linux；原生组件挂进 QQ 进程）
    - **NapCat**（macOS 首选；改 QQ 加载入口注入 Shell）
 
 ## 给别人的安装清单（照着做就能跑起来）
 
-> 这是「把仓库交给别人」时的最短路径。细节在下文对应章节；macOS 请配合
-> [docs/guides/MACOS_NAPCAT.md](docs/guides/MACOS_NAPCAT.md)（NapCat 的 GUI 授权步骤没法用命令代替）。
+> 这是「把仓库交给别人」时的最短路径。细节在下文对应章节。
+> **平台不同，第 5~8 步的装法不同**：
+> - **Windows**：SnowLuma + `windows\start-all-windows.bat`（完整步骤：[docs/guides/WINDOWS.md](docs/guides/WINDOWS.md)，先跑 `windows\check-env.ps1` 体检）
+> - **macOS**：NapCat + `./start-all-mac.command`（完整步骤：[docs/guides/MACOS_NAPCAT.md](docs/guides/MACOS_NAPCAT.md)，GUI 授权没法用命令代替）
 
 | # | 做什么 | 命令 / 说明 |
 | --- | --- | --- |
@@ -173,8 +185,8 @@ QQ 消息 ──► QQ 网关（OneBot v11 WS）──► 本桥接进程 ──
 | 4 | 填网关 + 白名单 | `snowluma.wsUrl` / `httpUrl` / `accessToken`；`ownerQQ`；`allow.private` / `allow.groups` |
 | 5 | **装 DSH 端**（最容易漏） | `node scripts/setup-dsh.mjs` ← **默认 `web` profile；DSH 桌面版必须传 `desktop`**：`node scripts/setup-dsh.mjs desktop` |
 | 6 | **重启 DSH** | preset 与 MCP 只在 DSH 启动时加载；不重启则 QQ 上毫无反应 |
-| 7 | 启 QQ 网关 | SnowLuma：双击 `launcher.bat` → WebUI 扫码；NapCat：`/Applications/QQ.app/Contents/MacOS/QQ --no-sandbox` |
-| 8 | 启桥接 | Windows：`npm start`（或 `start.bat` 守护模式）。**DSH 桌面版**：`node scripts/start-mac.mjs`（先探测端口再写回配置）；macOS 一键：`./start-all-mac.command` |
+| 7 | 启 QQ 网关 | **Windows**：SnowLuma 双击 `launcher.bat` → WebUI 扫码；**macOS**：NapCat（`/Applications/QQ.app/Contents/MacOS/QQ --no-sandbox`） |
+| 8 | 启桥接 | **Windows**：`windows\start-all-windows.bat`（一键）或 `npm start`；DSH 桌面版用 `node scripts\start-windows.mjs`。**macOS**：`./start-all-mac.command`；DSH 桌面版用 `node scripts/start-mac.mjs` |
 | 9 | 打开控制台 | <http://127.0.0.1:3100>，令牌见 `state/console-token`（首次启动自动生成）；「访问与安全」页填 `ownerQQ` 与白名单 |
 | 10 | 端到端验证 | 用你的 QQ 私聊机器人发「你好」，几秒内应有回复；不通过就看「排查顺序」 |
 
@@ -369,6 +381,13 @@ qq-bridge/
                         #   DSH_020_ADAPTATION.md   DSH 0.2.0 适配改动记录
                         #   PRIVACY.md              发布前隐私扫描
   audio/                # 语音库：放你准备好的音频，可作 QQ 语音发出（规则见 audio/README.md）
+  windows/              # ★ Windows 版：一键启动 / 语音引擎（NVIDIA CUDA、AMD 走 CPU）/ 环境体检
+    README.md           #   Windows 入口（脚本清单 + 显卡怎么选）
+    start-all-windows.bat   #   SnowLuma → 可选语音引擎 → 桥接守护
+    start-gsv-nvidia.bat    #   GPT-SoVITS（device: cuda）
+    start-gsv-amd.bat       #   GPT-SoVITS（CPU；AMD 无官方 Windows ROCm）
+    check-env.ps1           #   只读环境体检（Node/Python/ffmpeg/显卡/端口/配置）
+    gsv/                #   tts_infer_v2proplus_{cuda,cpu}.yaml 推理配置模板
   dsh/agent-presets/    # qq-chat / qq-chat-v2 的 preset 权威源（含工具守卫 qq-tool-restrict.mjs）
   plugins/
     qq-agent-presets/   # DSH bundle：生成两个 preset 行 + 携带工具守卫
@@ -387,6 +406,7 @@ qq-bridge/
   scripts/              # 安装/测试/运维/探针（命名约定见 docs/FOLDER_MAP.md）
     setup-dsh.mjs           # 装 DSH 端（preset + MCP + bundle）
     start-mac.mjs           # macOS：探测 DSH 桌面版端口 → 启动
+    start-windows.mjs       # Windows：netstat + tasklist 探测 DSH 桌面版端口 → 写回配置 → 启动
     patch-snowluma-sdk.mjs  # 修补 SDK 的 ESM 打包 bug（postinstall 自动执行）
   state/                # 运行时数据（不入库）
 ```

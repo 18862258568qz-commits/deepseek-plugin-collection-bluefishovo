@@ -1,0 +1,82 @@
+# GPT-SoVITS 推理配置：v2ProPlus + NVIDIA GPU（CUDA）
+#
+# 用法：把本文件复制到 <GSV 目录>/GPT_SoVITS/configs/ 下，
+#       再用 windows/start-gsv-nvidia.bat 启动（脚本会自动帮你复制）。
+#
+# 关键两行：
+#   device: cuda   → 用 NVIDIA 显卡推理（需要 CUDA 版 PyTorch）
+#   is_half: true  → 半精度，显存占用约减半（显存 <6GB 时如果报 OOM，把它改成 false）
+#
+# 没有 NVIDIA 显卡 / 只想用 CPU：用同目录的 tts_infer_v2proplus_cpu.yaml。
+custom:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1v3.ckpt
+  version: v2ProPlus
+  vits_weights_path: GPT_SoVITS/pretrained_models/v2Pro/s2Gv2ProPlus.pth
+v1:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt
+  version: v1
+  vits_weights_path: GPT_SoVITS/pretrained_models/s2G488k.pth
+v2:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/gsv-v2final-pretrained/s1bert25hz-5kh-longer-epoch=12-step=369668.ckpt
+  version: v2
+  vits_weights_path: GPT_SoVITS/pretrained_models/gsv-v2final-pretrained/s2G2333k.pth
+v2Pro:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1v3.ckpt
+  version: v2Pro
+  vits_weights_path: GPT_SoVITS/pretrained_models/v2Pro/s2Gv2Pro.pth
+v2ProPlus:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1v3.ckpt
+  version: v2ProPlus
+  vits_weights_path: GPT_SoVITS/pretrained_models/v2Pro/s2Gv2ProPlus.pth
+v3:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1v3.ckpt
+  version: v3
+  vits_weights_path: GPT_SoVITS/pretrained_models/s2Gv3.pth
+v4:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1v3.ckpt
+  version: v4
+  vits_weights_path: GPT_SoVITS/pretrained_models/gsv-v4-pretrained/s2Gv4.pth
+v5dev:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1v3.ckpt
+  version: v5dev
+  vits_weights_path: GPT_SoVITS/pretrained_models/gsv-v5-pretrained/s2Gv5dev.pth
+v5turbo:
+  bert_base_path: GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large
+  cnhuhbert_base_path: GPT_SoVITS/pretrained_models/chinese-hubert-base
+  device: cuda
+  is_half: true
+  t2s_weights_path: GPT_SoVITS/pretrained_models/s1v3.ckpt
+  version: v5turbo
+  vits_weights_path: GPT_SoVITS/pretrained_models/gsv-v5-pretrained/s2Gv5turbo.pth

@@ -236,6 +236,29 @@ QQ_BRIDGE_EDGE_TTS_PYTHON=/opt/homebrew/bin/python3 npm start
 > **没有这个控制器也没关系**：请求失败会被静默忽略，继续走正常合成。
 > 不想让它去敲那个端口，把 `socialV2.voice.gsv.controllerUrl` 设为 `""` 即可关闭自动拉起。
 
+### 5.3 按平台/显卡选启动方式（Windows 版）
+
+macOS 用上面 `./start-gsv.command`；**Windows 用 `windows/` 里的脚本**：
+
+| 你的显卡 | 脚本 | 推理设备 | 说明 |
+| --- | --- | --- | --- |
+| **NVIDIA**（GTX 16 系 / RTX 全系） | `windows\start-gsv-nvidia.bat` | `device: cuda` | 快（短句约 1~3 秒）。显存 <6 GB 报 OOM 时把配置里的 `is_half` 改 `false` |
+| **AMD**（RX 6000/7000 等） | `windows\start-gsv-amd.bat` | `device: cpu` | GPT-SoVITS **没有官方 Windows ROCm 版**，默认走 CPU（短句约 4~10 秒）。进阶：Linux + ROCm，或社区 ZLUDA（成功时设 `GSV_DEVICE=cuda`） |
+| 无独显 / 核显 | `windows\start-gsv-amd.bat` | `device: cpu` | 同上 |
+| 不装引擎 | —（不运行） | 自动回退 edge-tts | 零显卡要求，联网即可 |
+
+Windows 脚本支持的环境变量与 macOS 一致（`GSV_DIR` / `GSV_PYTHON` / `GSV_CONFIG` / `GSV_PORT`），
+另外会自动把仓库里的推理配置模板复制到 GSV 目录：
+
+| 模板 | 用途 |
+| --- | --- |
+| `windows/gsv/tts_infer_v2proplus_cuda.yaml` | NVIDIA（`device: cuda`、`is_half: true`） |
+| `windows/gsv/tts_infer_v2proplus_cpu.yaml` | AMD / 无独显（`device: cpu`） |
+
+> `device` 与 `is_half` 是**每个版本段各自**的字段（文件里 `custom` / `v2ProPlus` 等各有自己的），
+> 改的时候要改你实际使用的那一段（默认 `v2ProPlus`）。
+> Windows 完整安装步骤见 [WINDOWS.md](WINDOWS.md)。
+
 ### 5.3 装 GPT-SoVITS（参考步骤）
 
 以下是在 Apple Silicon 上跑通的路径，Intel Mac / Linux 同理（把 CPU 换成 GPU 配置会更慢或更快，取决于硬件）。

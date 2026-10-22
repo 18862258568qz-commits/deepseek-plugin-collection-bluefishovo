@@ -22,6 +22,7 @@ qq-bridge/
 ├── public/               ← 控制台前端（console.html）
 ├── roles/                ← 人格卡（人设提示词）
 ├── audio/                ← 语音库（你的音频；默认不入库，只留 README）
+├── windows/              ← Windows 版：一键启动 / 语音引擎（NVIDIA CUDA、AMD CPU）/ 环境体检
 ├── assets/               ← 仓库配图
 ├── scripts/              ← 安装 / 测试 / 运维 / 探针脚本
 └── state/                ← 运行时数据（不入库）
@@ -38,6 +39,7 @@ qq-bridge/
 | `roles/` | 人格卡（`小鲸鱼.md` / `傲娇助手.md` / `朋友们.md` + `README.md` 写法说明）：控制台「人格与角色」页可编辑，保存即生效 | 用户内容，别乱动。写法见 [../roles/README.md](../roles/README.md) |
 | `audio/` | **语音库**（你的真实音频）。桥接的语音工具只能发这里的文件 | 用户文件，别删。见 [../audio/README.md](../audio/README.md) |
 | `assets/` | 仓库配图（`deepseek娘.png` 等）。演示视频改为 Release 附件，不入库 | 别加大体积二进制 |
+| `windows/` | **Windows 版入口**：`README.md`（脚本清单 + 显卡怎么选）、`start-all-windows.bat`（SnowLuma → 可选语音引擎 → 桥接守护）、`start-gsv-nvidia.bat` / `start-gsv-amd.bat`（GPT-SoVITS 的 CUDA / CPU 两种起法）、`check-env.ps1`（只读环境体检）、`gsv/`（`tts_infer_v2proplus_{cuda,cpu}.yaml` 推理配置模板）。**批处理必须是纯 ASCII + CRLF**，改动后用 `npm run test:audit` 复查 | 可增补，别删（Windows 用户唯一入口） |
 | `state/` | **运行时数据**：会话映射、模式、角色、黑话库、表情库、语音缓存索引、日志、锁、控制台令牌。`.gitignore` 排除 | 用户数据，别删；删了会重建但历史映射丢失 |
 | `config.json` | 运行配置（真实配置**不入库**）；模板是 `config.example.json` | 值属于用户 |
 

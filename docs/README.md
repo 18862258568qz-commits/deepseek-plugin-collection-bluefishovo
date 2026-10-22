@@ -12,6 +12,7 @@
 | 文档 | 一句话说明 | 状态 |
 | --- | --- | --- |
 | [guides/DSH_SETUP.md](guides/DSH_SETUP.md) | **DSH 端安装说明**：`qq-chat` / `qq-chat-v2` 两个 preset 与三个 MCP server 怎么装到目标设备的 DSH 上（`scripts/setup-dsh.mjs` 的 profile 参数、幂等性、验证方式），外加一整节常见报错对照表 | ✅ **装完桥接必读** |
+| [guides/WINDOWS.md](guides/WINDOWS.md) | **Windows 接入全流程**：SnowLuma 网关、DSH Web/桌面版（`scripts/start-windows.mjs` 探测随机端口）、`windows/` 一键启动与环境体检、语音引擎选型（NVIDIA CUDA / AMD CPU 兜底 / 不装走 edge-tts）、常见问题与回滚 | ✅ **Windows 用户从这里开始** |
 | [guides/MACOS_NAPCAT.md](guides/MACOS_NAPCAT.md) | **macOS 接入全流程**：为什么 macOS 用 NapCat 而不是 SnowLuma、NapCat 安装器与 App 管理（TCC）授权、OneBot 配置、DSH 桌面版随机端口（`scripts/start-mac.mjs`）、已知降级、DSH 0.2.1 的 `{{cwd}}` 兼容修复、完整回滚步骤 | ✅ **macOS 用户从这里开始** |
 | [guides/VOICE.md](guides/VOICE.md) | **语音发送全解**：三条链路（预制语音库 / edge-tts 动态合成 / 本地 GPT-SoVITS 专属音色）、全部 `socialV2.voice.*` 字段、GSV 安装与参考音频准备、ffmpeg 依赖、语音模式窗口、故障排查表 | ✅ |
 | [guides/TOKEN_USAGE_CONSOLE.md](guides/TOKEN_USAGE_CONSOLE.md) | 控制台「令牌与花费」看板：数据来源、计价口径（峰谷分时）、API、配置 | ✅ |
@@ -26,7 +27,7 @@
 
 | 我想…… | 看这个 |
 | --- | --- |
-| 从零把它跑起来（Windows） | [../README.md](../README.md) 的「完整启动流程」 |
+| 从零把它跑起来（Windows） | [guides/WINDOWS.md](guides/WINDOWS.md)（脚本见 [../windows/README.md](../windows/README.md)） |
 | 从零把它跑起来（macOS） | [guides/MACOS_NAPCAT.md](guides/MACOS_NAPCAT.md) |
 | 在新设备上把 qq-bridge 接进 DSH | [guides/DSH_SETUP.md](guides/DSH_SETUP.md) |
 | 让 AI 会发语音 / 换成我自己的音色 | [guides/VOICE.md](guides/VOICE.md) |
